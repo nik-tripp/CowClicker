@@ -6,7 +6,7 @@ export default createStore({
         return {
             message: "nothing yet",
             username: "",
-        //  TODO selected user, so we can update them wherever
+            selectedPlayer: null
         }
     },
     mutations: {
@@ -15,9 +15,13 @@ export default createStore({
         },
         setUsername(state, username) {
             state.username = username;
+        },
+        setSelectedUser(state, player) {
+            state.selectedPlayer = player;
+        },
+        updateSelectedUserClicks(state, clickCount) {
+            state.selectedPlayer.clicks = clickCount;
         }
-    //  TODO  set selected user
-        // TODO update user click count
     },
     actions: {
         fetchAPIRootMessage: async function ({commit}) {
@@ -33,7 +37,27 @@ export default createStore({
                 console.log(error)
             })
         },
-        // TODO fetch users
-        // TODO send user click to server and update local user's points
+        addClick: async function ({commit, state}) {
+            // Only send the call if the right user is logged in (can be removed if the API ever
+            // gets proper client authentication)
+            if (state.username !== state.selectedPlayer.username) {
+                alert("Must be signed in as this user to add to their clicks!")
+            }
+            else {
+                axios.patch("players/"+state.selectedPlayer.username+"/addclick/")
+                    .then(({data, status}) => {
+                        if (status === 200) {
+                            commit('updateSelectedUserClicks', data.clicks);
+                        }
+                        else {
+                            console.log("Unexpected response code ["+status+"] with following payload: "+data);
+                        }
+                    }).catch(error => {
+                        console.log("Error incrementing user clicks: "+error)
+                })
+            }
+        }
+        // If we get any more axios calls we need to make, may be worthwhile to add an automatic error catch
+        // and a simple intermediary function in axios that checks expected statuses by default
     }
 })
