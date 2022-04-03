@@ -4,9 +4,9 @@
   <ul id="leaderList">
 <!--   TODO order this by user.clicks    -->
 <!--   TODO make these entries allow a click to select the user -->
-    <li v-for="user in users" :key="user.username">
-    user: {{ user.username }} clicks: {{ user.clicks }}
-  </li>
+    <li v-for="player of players" :key="player.username">
+      user: {{ player.username }} clicks: {{ player.clicks }}
+    </li>
   </ul>
 <!--  TODO refresh button-->
 </div>
@@ -18,19 +18,19 @@ export default {
   name: "LeaderBoard",
   data() {
     return {
-      users: []
+      players: []
     }
   },
   methods: {
-    fetchUsers: () => {
-      axios.get('users/').then((data) => {
-        this.$data.users = data;
+    fetchPlayers: function () {
+      axios.get('players/').then(({data}) => {
+        this.players = data;
       }).catch(error => {console.log(error)})
-    }
+    },
   },
   // TODO need to bind in the selected user and set user action
   mounted() {
-    this.fetchUsers();
+    this.fetchPlayers();
   }
 }
 </script>

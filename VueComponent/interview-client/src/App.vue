@@ -1,7 +1,7 @@
 <template>
   <h1>Welcome to CowClicker!</h1>
   <SignIn/>
-  <LeaderBoard v-if="selectedPlayer !== null"/>
+  <LeaderBoard v-if="selectedPlayer === null"/>
   <UserView v-else/>
 </template>
 
