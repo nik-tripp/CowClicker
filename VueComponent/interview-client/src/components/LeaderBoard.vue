@@ -2,12 +2,12 @@
 <div id="leaderBoardWrapper">
   <h1>Leaderboard</h1>
   <ul id="leaderList">
-<!--   TODO order this by user.clicks    -->
 <!--   TODO make these entries allow a click to select the user -->
     <li v-for="player of players" :key="player.username">
       user: {{ player.username }} clicks: {{ player.clicks }}
     </li>
   </ul>
+  <button @click="fetchPlayers">Refresh scores</button>
 <!--  TODO refresh button-->
 </div>
 </template>
