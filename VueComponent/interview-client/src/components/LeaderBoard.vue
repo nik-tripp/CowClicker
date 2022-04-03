@@ -2,17 +2,16 @@
 <div id="leaderBoardWrapper">
   <h1>Leaderboard</h1>
   <ul id="leaderList">
-<!--   TODO make these entries allow a click to select the user -->
-    <li v-for="player of players" :key="player.username">
+    <li v-for="player of players" :key="player.username" @click="setSelectedUser(player)">
       user: {{ player.username }} clicks: {{ player.clicks }}
     </li>
   </ul>
   <button @click="fetchPlayers">Refresh scores</button>
-<!--  TODO refresh button-->
 </div>
 </template>
 <script>
 import axios from "axios";
+import {mapMutations} from "vuex";
 
 export default {
   name: "LeaderBoard",
@@ -22,6 +21,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['setSelectedUser']),
     fetchPlayers: function () {
       axios.get('players/').then(({data}) => {
         this.players = data;
@@ -29,7 +29,6 @@ export default {
       }).catch(error => {console.log(error)})
     },
   },
-  // TODO need to bind in the selected user and set user action
   mounted() {
     this.fetchPlayers();
   }
