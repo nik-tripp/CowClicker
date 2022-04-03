@@ -1,0 +1,67 @@
+version: '3'
+services:
+  proxy-server:
+    image: nginx
+    container_name: api-proxy
+    ports:
+      - "80:80"
+    depends_on:
+      - interview-console
+      - interview-api
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - api-static:/usr/share/nginx/html/static:ro
+      - api-media:/usr/share/nginx/html/media:ro
+  interview-api:
+    image: interview-api:dev
+    build:
+      context: ./djangoProject
+      dockerfile: Dockerfile
+    container_name: interview-api
+    environment:
+      - RUN_ENV=dev
+      - PYTHONUNBUFFERED=1
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    depends_on:
+      - db
+    volumes:
+      - api-static:/files/static
+      - api-media:/files/media
+      - ./djangoProject/mount:/code
+  db:
+    image: postgres:latest
+    container_name: db
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+  dns-server:
+    container_name: interview-dns-server
+    hostname: dns-server
+    image: technitium/dns-server:latest
+    # Use "host" network mode for DHCP deployments
+    # network_mode: "host"
+    ports:
+      - "5380:5380/tcp" #DNS web console
+      - "53:53/udp" #DNS service
+      - "53:53/tcp" #DNS service
+      # - "67:67/udp" #DHCP service
+      # - "853:853/tcp" #DNS-over-TLS service
+      # - "443:443/tcp" #DNS-over-HTTPS service
+      # - "80:80/tcp" #DNS-over-HTTPS service certbot certificate renewal
+      # - "8053:8053/tcp" #DNS-over-HTTPS using reverse proxy
+    volumes:
+      - dns-config:/etc/dns/config
+    restart: unless-stopped
+
+volumes:
+  db-data:
+  api-static:
+  api-media:
+  dns-config:
