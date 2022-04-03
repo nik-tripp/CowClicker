@@ -1,16 +1,15 @@
 <template>
   <h1>Welcome to CowClicker!</h1>
   <SignIn/>
-<!-- TODO Only show leaderboard if a user is not selected-->
-  <LeaderBoard/>
-<!-- TODO Only show user view if a user *is* selected -->
-  <UserView/>
+  <LeaderBoard v-if="selectedPlayer !== null"/>
+  <UserView v-else/>
 </template>
 
 <script>
 import SignIn from "@/components/SignIn";
 import LeaderBoard from "@/components/LeaderBoard";
 import UserView from "@/components/UserView";
+import {mapState} from "vuex";
 
 export default {
   name: 'App',
@@ -18,8 +17,8 @@ export default {
     UserView,
     LeaderBoard,
     SignIn
-  }
-// TODO mount in selected user from store
+  },
+  computed: mapState(['selectedPlayer']),
 }
 </script>
 
