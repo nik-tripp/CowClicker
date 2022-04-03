@@ -20,4 +20,5 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('players/', views.PlayerList.as_view(), name='player_list'),
     path('players/<str:username>/', views.PlayerDetail.as_view(), name='player_detail'),
+    path('players/<str:username>/addclick/', views.increment_clicks, name='increment_player_score')
 ]

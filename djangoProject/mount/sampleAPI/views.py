@@ -1,4 +1,5 @@
 from rest_framework.decorators import api_view, renderer_classes
+from rest_framework.generics import get_object_or_404
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework import generics
@@ -16,10 +17,20 @@ class PlayerList(generics.ListAPIView):
     serializer_class = PlayerSerializer
     queryset = Player.objects.all()
 
+
 class PlayerDetail(generics.RetrieveAPIView):
     serializer_class = PlayerSerializer
     queryset = Player.objects.all()
     lookup_field = 'username'
     lookup_url_kwarg = 'username'
 
-# TODO action endpoint for adding to a player's score
+
+@api_view(("PATCH",))
+@renderer_classes((JSONRenderer,))
+def increment_clicks(request, username):
+    player = get_object_or_404(Player, username=username)
+    player.clicks += 1
+    player.save()
+
+    return Response(PlayerSerializer(player).data)
+
