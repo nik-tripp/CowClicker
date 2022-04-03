@@ -1,5 +1,6 @@
 <template>
   <div id="signInWrapper">
+    <label>Username: <input type="text" placeholder="Enter Username Here"/></label>
 <!-- TODO simple "enter username" bound to username in store-->
   </div>
 </template>
