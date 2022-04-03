@@ -25,6 +25,7 @@ export default {
     fetchPlayers: function () {
       axios.get('players/').then(({data}) => {
         this.players = data;
+        this.players.sort((a, b) => {return a.clicks - b.clicks})
       }).catch(error => {console.log(error)})
     },
   },
