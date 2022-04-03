@@ -2,7 +2,7 @@
 <div id="leaderBoardWrapper">
   <h1>Leaderboard</h1>
   <ul id="leaderList">
-    <li v-for="player of players" :key="player.username" @click="setSelectedUser(player)">
+    <li v-for="player of players" :key="player.username" @click="setSelectedPlayer(player)">
       user: {{ player.username }} clicks: {{ player.clicks }}
     </li>
   </ul>
@@ -21,11 +21,11 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['setSelectedUser']),
+    ...mapMutations(['setSelectedPlayer']),
     fetchPlayers: function () {
       axios.get('players/').then(({data}) => {
         this.players = data;
-        this.players.sort((a, b) => {return a.clicks - b.clicks})
+        this.players.sort((a, b) => {return b.clicks - a.clicks})
       }).catch(error => {console.log(error)})
     },
   },

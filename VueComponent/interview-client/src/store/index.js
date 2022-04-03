@@ -16,7 +16,7 @@ export default createStore({
         setUsername(state, username) {
             state.username = username;
         },
-        setSelectedUser(state, player) {
+        setSelectedPlayer(state, player) {
             state.selectedPlayer = player;
         },
         updateSelectedUserClicks(state, clickCount) {
