@@ -58,7 +58,6 @@ services:
       # - "8053:8053/tcp" #DNS-over-HTTPS using reverse proxy
     volumes:
       - dns-config:/etc/dns/config
-    restart: unless-stopped
 
 volumes:
   db-data:
