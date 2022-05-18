@@ -1,36 +1,29 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import "./style.css";
 
-class LeaderBoard extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            players: []
-        };
-    }
+function LeaderBoard(props) {
+    const [players, updatePlayers] = useState([])
 
-    componentDidMount() {
+    useEffect(() => {
         axios.get('players/').then(({data}) => {
-            this.setState({players: data.sort((a, b) => {return b.clicks - a.clicks})});
+            updatePlayers(data.sort((a, b) => {return b.clicks - a.clicks}));
         }).catch(error => {console.log(error)})
-    }
+    })
 
-    render() {
-        let playerLIs = this.state.players.map((player) =>
-            <li key={player.username} onClick={() => this.props.setSelectedPlayer(player)}>
-                { player.username }: { player.clicks }
-            </li>
-        )
+    const playerLIs = players.map((player) =>
+        <li key={player.username} onClick={() => props.setSelectedPlayer(player)}>
+            { player.username }: { player.clicks }
+        </li>
+    )
 
-        return (
-            <div className="LeaderBoard">
-                <ol>
-                    { playerLIs }
-                </ol>
-            </div>
-        );
-    }
+    return (
+        <div className="LeaderBoard">
+            <ol>
+                { playerLIs }
+            </ol>
+        </div>
+    );
 }
 
-export { LeaderBoard };
+export default LeaderBoard;

@@ -1,5 +1,7 @@
 import React from "react";
-import { Login, LeaderBoard, PlayerClickPage } from "./components"
+import Login from "./components/Login"
+import LeaderBoard from "./components/LeaderBoard/component";
+import PlayerClickPage from "./components/PlayerClickPage/component";
 
 class CowClicker extends React.Component {
     constructor(props) {
