@@ -1,5 +1,8 @@
-import logo from '../../logo.svg';
+// @ts-ignore
+import logo from './logo.svg';
 import './App.css';
+// @ts-ignore
+import React from 'react';
 
 function App() {
   return (
