@@ -1,10 +1,12 @@
 {
+  "include": [
+    "images.d.ts", "src/*"
+  ],
   "compilerOptions": {
     "module": "commonjs",
     "target": "es5",
-    "sourceMap": true
-  },
-  "exclude": [
-    "node_modules"
-  ]
+    "jsx": "react",
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true
+  }
 }
