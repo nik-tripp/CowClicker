@@ -1,9 +1,17 @@
 import React, { useState } from "react";
 import axios from "axios";
+import cowPhoto from "./cow_stock_photo.jpg"
 import "./style.css";
+import {Player} from "../../types";
 
-function PlayerClickPage(props) {
-    const [player, updatePlayer] = useState(props.player)
+type PlayerClickProps = {
+    player: Player;
+    loggedInPlayerName: string;
+    clearPlayer: React.MouseEventHandler<HTMLButtonElement>;
+}
+
+function PlayerClickPage(props: PlayerClickProps){
+    const [player, updatePlayer] = useState<Player>(props.player)
 
     // If the correct player is logged in, send a click to the server and update display with server's new count
     const addClick = () => {
@@ -28,7 +36,7 @@ function PlayerClickPage(props) {
     return (
         <div className="ClickTheCow">
             <h3>User: { player.username }</h3>
-            <img className="cow-image" onClick={addClick} src={require("./cow_stock_photo.jpg")} alt="A cow in a field"/>
+            <img className="cow-image" onClick={addClick} src={cowPhoto} alt="A cow in a field"/>
             <h3>Clicks: { player.clicks }</h3>
             <button onClick={props.clearPlayer}>Return to Leaderboard</button>
         </div>

@@ -1,15 +1,16 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import "./style.css";
+import {Player} from "../../types";
 
-function LeaderBoard(props) {
-    const [players, updatePlayers] = useState([])
+function LeaderBoard(props: { setSelectedPlayer: (player: Player) => void; }) {
+    const [players, updatePlayers] = useState<Player[]>([]);
 
     useEffect(() => {
         axios.get('players/').then(({data}) => {
-            updatePlayers(data.sort((a, b) => {return b.clicks - a.clicks}));
+            updatePlayers(data.sort((a: Player, b: Player) => {return b.clicks - a.clicks}));
         }).catch(error => {console.log(error)})
-    })
+    });
 
     const playerLIs = players.map((player) =>
         <li key={player.username} onClick={() => props.setSelectedPlayer(player)}>
